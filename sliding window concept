@@ -1,0 +1,42 @@
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        ws=0
+        mxlen=0
+        fmap={}
+        for we in range(len(s)):
+            char=s[we]
+            if fmap=={}:
+                fmap[char]=1
+                mxlen=max(mxlen,we-ws+1)
+                continue
+            if char not in fmap:
+                fmap[char]=1
+                hfreq=max(zip(fmap.values(),fmap.keys()))[0]
+                rep=(we-ws+1)-hfreq
+                if rep<=k:
+                    mxlen=max(mxlen,we-ws+1)
+                    continue
+                else:
+                    pchar=s[ws]
+                    fmap[pchar]-=1
+                    ws+=1
+                    if fmap[pchar]==0:
+                        del fmap[pchar]
+                    
+                
+            else:
+                fmap[char]+=1
+                hfreq=max(zip(fmap.values(),fmap.keys()))[0]
+                rep=(we-ws+1)-hfreq
+                if rep<=k:
+                    mxlen=max(mxlen,we-ws+1)
+                    continue
+                else:
+                    pchar=s[ws]
+                    fmap[pchar]-=1
+                    ws+=1
+                    if fmap[pchar]==0:
+                        del fmap[pchar]
+                    
+        return mxlen
+                
